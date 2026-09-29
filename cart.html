@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cart — Spice Plate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Your cart</h1>
+        <p>Change quantity or remove items before you place the order.</p>
+      </div>
+    </div>
+    <div id="cartRoot"></div>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const session = requireAuth();
+    if (session) {
+      buildNav("cart");
+      function render() {
+        const cart = getCart();
+        const root = document.getElementById("cartRoot");
+        if (!cart.length) {
+          root.innerHTML = `<p class="empty">Cart is empty. <a href="menu.html">Add food</a></p>`;
+          return;
+        }
+        root.innerHTML = `
+          <div class="cart-list">
+            ${cart.map((item) => `
+              <div class="cart-item">
+                <img src="${item.image}" alt="${item.name}" />
+                <div>
+                  <h3>${item.name}</h3>
+                  <div class="price">${rupees(item.price)} each</div>
+                  <div class="qty">
+                    <button type="button" data-qty="${item.id}" data-d="-1">−</button>
+                    <strong>${item.qty}</strong>
+                    <button type="button" data-qty="${item.id}" data-d="1">+</button>
+                  </div>
+                </div>
+                <div class="actions">
+                  <div class="price">${rupees(item.price * item.qty)}</div>
+                  <button class="btn ghost" type="button" data-remove="${item.id}" style="margin-top:8px">Remove</button>
+                </div>
+              </div>`).join("")}
+          </div>
+          <div class="total-box">
+            <div>
+              <div class="note">${cartCount()} items</div>
+              <strong>Total ${rupees(cartTotal())}</strong>
+            </div>
+            <a class="btn" href="checkout.html">Place order</a>
+          </div>`;
+      }
+      document.getElementById("cartRoot").addEventListener("click", (e) => {
+        const remove = e.target.dataset.remove;
+        const qtyId = e.target.dataset.qty;
+        if (remove) setQty(remove, 0);
+        if (qtyId) {
+          const item = getCart().find((c) => c.id === qtyId);
+          if (item) setQty(qtyId, item.qty + Number(e.target.dataset.d));
+        }
+        if (remove || qtyId) render();
+      });
+      render();
+    }
+  </script>
+</body>
+</html>

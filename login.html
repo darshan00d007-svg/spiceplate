@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login — Spice Plate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-card">
+      <h1>Spice Plate</h1>
+      <p class="sub">New here or using a new device? Register first. Accounts are saved only in this browser and do not sync between devices.</p>
+      <div class="tabs">
+        <button type="button" id="tabLogin" class="active">Login</button>
+        <button type="button" id="tabRegister">Register</button>
+      </div>
+      <form id="authForm">
+        <div id="nameWrap" hidden>
+          <label for="name">Name</label>
+          <input id="name" type="text" autocomplete="name" />
+        </div>
+        <label for="email">Email</label>
+        <input id="email" type="email" required autocomplete="username" />
+        <label for="password">Password</label>
+        <input id="password" type="password" required minlength="4" autocomplete="current-password" />
+        <button class="btn full" type="submit" id="submitBtn">Login</button>
+        <p class="msg" id="msg"></p>
+      </form>
+    </div>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="node_modules/js-sha256/build/sha256.min.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if (getSession()) location.href = "menu.html";
+    let mode = "login";
+    const nameWrap = document.getElementById("nameWrap");
+    const submitBtn = document.getElementById("submitBtn");
+    const msg = document.getElementById("msg");
+    document.getElementById("tabLogin").onclick = () => setMode("login");
+    document.getElementById("tabRegister").onclick = () => setMode("register");
+    function setMode(next) {
+      mode = next;
+      document.getElementById("tabLogin").classList.toggle("active", next === "login");
+      document.getElementById("tabRegister").classList.toggle("active", next === "register");
+      nameWrap.hidden = next !== "register";
+      submitBtn.textContent = next === "login" ? "Login" : "Create account";
+      msg.textContent = "";
+    }
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+      msg.classList.remove("error");
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const name = document.getElementById("name").value;
+      try {
+        if (mode === "register") {
+          if (!name.trim()) throw new Error("Please enter your name.");
+          await registerUser(name, email, password);
+        } else {
+          await loginUser(email, password);
+        }
+        location.href = "menu.html";
+      } catch (err) {
+        msg.classList.add("error");
+        msg.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

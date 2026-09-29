@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f3eb" />
+  <meta name="description" content="South Indian comfort, made fresh. Order dosa, idly, poori, curry and more from Spice Plate." />
+  <title>Spice Plate — South Indian kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/restaurant-home.css" />
+</head>
+<body>
+  <div class="announcement"><span class="open-dot" aria-hidden="true"></span> MADE FRESH, SERVED WITH A LITTLE EXTRA LOVE <span class="announcement-hours">OPEN TODAY · 8 AM — 10 PM</span></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Spice Plate home"><span class="brand-mark" aria-hidden="true">SP</span><span>SPICE PLATE<small>SOUTH INDIAN KITCHEN</small></span></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span></button>
+    <nav class="site-nav" id="primary-nav" aria-label="Main navigation">
+      <a href="#popular">Popular dishes</a>
+      <a href="#our-kitchen">Our kitchen</a>
+      <a class="account-link" data-account-link href="login.html">Sign in</a>
+      <a class="cart-link" data-cart-link href="login.html" aria-label="Open your cart">Cart <span class="cart-count" data-cart-count>0</span></a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> SOUTH INDIAN COMFORT, MADE FRESH</p>
+        <h1 id="hero-title">Good food.<br />Good <em>mood.</em></h1>
+        <p class="hero-description">Crisp dosas, soft idly, and the kind of curry that makes you reach for one more parota. Your table’s waiting.</p>
+        <div class="hero-actions"><a class="primary-button" data-order-link href="login.html">Order something good <span aria-hidden="true">↗</span></a><a class="secondary-link" href="#popular">See what's cooking <span aria-hidden="true">↓</span></a></div>
+        <div class="hero-footnote"><span>01</span> COOKED TO ORDER <i></i> ALWAYS MADE FRESH</div>
+      </div>
+      <div class="hero-visual">
+        <img src="images/dosa.jpg" alt="Freshly made dosa, crisp and golden from the kitchen" fetchpriority="high" />
+        <div class="food-stamp" aria-hidden="true"><span>GOOD<br />FOOD</span><span class="stamp-spark">✳</span><span>GOOD<br />DAY</span></div>
+        <div class="hero-dish"><span>THE HOUSE FAVOURITE</span><strong>Golden dosa</strong><span>CRISP, WARM & MADE TO ORDER</span></div>
+      </div>
+      <a class="scroll-cue" href="#popular" aria-label="Scroll to popular dishes"><span></span> SCROLL FOR THE GOOD STUFF</a>
+    </section>
+
+    <section class="popular-section" id="popular">
+      <div class="section-head"><div><span class="section-kicker">A FEW CROWD FAVOURITES</span><h2>What's on the <em>plate.</em></h2></div><a class="all-menu-link" data-order-link href="login.html">See full menu <span aria-hidden="true">↗</span></a></div>
+      <div class="dish-grid" id="featured-menu" aria-live="polite"></div>
+      <div class="menu-footer"><span>Made fresh when you order. Just the way it should be.</span><a class="text-link" data-order-link href="login.html">Hungry for more? See the menu <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="kitchen-section" id="our-kitchen">
+      <div class="kitchen-image"><img src="images/chicken-curry.jpg" alt="A freshly served, richly spiced curry from the Spice Plate kitchen" loading="lazy" /></div>
+      <div class="kitchen-copy"><span class="section-kicker">A LITTLE FROM OUR KITCHEN</span><h2>Made fresh.<br /><em>Every time.</em></h2><p>We believe the best meals don't need a special occasion. Just good ingredients, a hot pan, and enough to share. Come hungry; leave happy.</p><a class="primary-button" data-order-link href="login.html">Find your new favourite <span aria-hidden="true">↗</span></a></div>
+      <span class="kitchen-number" aria-hidden="true">02</span>
+    </section>
+
+    <section class="closing-section"><span class="section-kicker">YOUR NEXT GOOD MEAL IS RIGHT HERE</span><h2>One plate turns<br />into <em>two.</em></h2><a class="primary-button" data-order-link href="login.html">Let's get you fed <span aria-hidden="true">↗</span></a></section>
+  </main>
+
+  <footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true">SP</span><span>SPICE PLATE<small>SOUTH INDIAN KITCHEN</small></span></a><span class="footer-note">Good food is always a good idea.</span><a class="back-to-top" href="#home">Back to the top ↑</a></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/restaurant-home.js"></script>
+</body>
+</html>

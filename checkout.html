@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pay — Spice Plate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Place order &amp; pay</h1>
+        <p>Pay in GPay, Paytm, or FamPay. Cash on delivery if you prefer.</p>
+      </div>
+    </div>
+    <p class="note" id="payeeNote"></p>
+    <div id="summary"></div>
+    <img class="qr" id="qr" alt="UPI QR code" />
+    <p class="note">On phone, tap an app. On computer, scan this QR. Money goes to the UPI ID below.</p>
+    <div class="pay-grid" style="margin-top:16px">
+      <button class="btn pay" type="button" data-pay="GPay">GPay</button>
+      <button class="btn paytm" type="button" data-pay="Paytm">Paytm</button>
+      <button class="btn fam" type="button" data-pay="FamPay">FamPay</button>
+      <button class="btn cod" type="button" data-pay="Cash on delivery">Cash on delivery</button>
+    </div>
+    <p class="msg" id="msg"></p>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const session = requireAuth();
+    if (session) {
+      buildNav("checkout");
+      if (!getCart().length) location.href = "cart.html";
+      else {
+        document.getElementById("payeeNote").innerHTML =
+          "UPI ID: <strong>" + APP.upiId + "</strong> &nbsp;|&nbsp; Mobile: <strong>" + APP.payeePhone + "</strong>";
+        document.getElementById("summary").innerHTML =
+          getCart().map((i) => `<div>${i.name} × ${i.qty} — ${rupees(i.price * i.qty)}</div>`).join("") +
+          `<p><strong>Total ${rupees(cartTotal())}</strong></p>`;
+        const link = upiLink(cartTotal(), "Spice Plate order");
+        document.getElementById("qr").src = qrSrc(link);
+
+        document.querySelector(".pay-grid").addEventListener("click", async (e) => {
+          const method = e.target.dataset.pay;
+          if (!method) return;
+          const msg = document.getElementById("msg");
+          msg.textContent = "Saving order and sending mail to " + APP.notifyEmail + "…";
+          const total = cartTotal();
+          const payLink = upiLink(total, "Spice Plate order");
+          const order = {
+            id: Date.now(),
+            customer: session.email,
+            items: getCart(),
+            total,
+            payment: method,
+            time: formatTime(new Date()),
+          };
+          saveOrder(order);
+          await notifyOwner(order);
+          clearCart();
+          if (method !== "Cash on delivery") {
+            window.location.href = payLink;
+          }
+          setTimeout(() => { location.href = "order-done.html?id=" + order.id; }, 600);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order placed — Spice Plate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Order placed</h1>
+        <p id="detail"></p>
+      </div>
+    </div>
+    <p class="note">A notification with food names, quantities, total, and time was sent to darshan00d007@gmail.com. If this is the first email from the site, open that Gmail and confirm FormSubmit once.</p>
+    <p><a class="btn" href="menu.html">Back to menu</a></p>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const session = requireAuth();
+    if (session) {
+      buildNav("done");
+      const id = Number(new URLSearchParams(location.search).get("id"));
+      const order = readJson(KEYS.orders, []).find((o) => o.id === id);
+      const el = document.getElementById("detail");
+      if (!order) el.textContent = "Thank you. Your order is saved.";
+      else {
+        el.innerHTML =
+          "Payment: <strong>" + order.payment + "</strong><br>" +
+          "Time: " + order.time + "<br>" +
+          "Total: " + rupees(order.total);
+      }
+    }
+  </script>
+</body>
+</html>
